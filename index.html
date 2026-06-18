@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Triaje y Diagnóstico Preliminar</title>
-    <!-- Tailwind CSS para diseño moderno e interactivo -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 font-sans min-h-screen p-4 md:p-8">
 
     <header class="max-w-7xl mx-auto mb-8 text-center md:text-left border-b pb-4">
         <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Hospital Digital 🏥</h1>
-        <p class="text-slate-600 mt-1">Módulo de Triaje Inteligente & Envío a Nube en Tiempo Real</p>
+        <p class="text-slate-600 mt-1">Módulo de Triaje Inteligente & Sincronización en la Nube</p>
     </header>
 
     <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- FORMULARIO DE REGISTRO (Ocupa 5 columnas de 12) -->
         <section class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
             <h2 class="text-xl font-bold text-slate-700 mb-4 flex items-center gap-2">
                 <span>📋</span> Ingreso de Pacientes
@@ -33,12 +31,12 @@
                     <div>
                         <label class="block text-sm font-semibold text-slate-600 mb-1">Temperatura (°C)</label>
                         <input type="number" step="0.1" id="temperatura" value="36.5" required
-                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-blue-500">
+                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-600 mb-1">Presión Sistólica (mmHg)</label>
                         <input type="number" id="presion" value="120" required
-                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-blue-500">
+                               class="w-full p-2.5 border border-slate-300 rounded-xl focus:outline-none">
                     </div>
                 </div>
 
@@ -46,17 +44,17 @@
                     <label class="block text-sm font-bold text-slate-700 mb-1">Síntomas Críticos detectados:</label>
                     
                     <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" id="dolorPecho" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
-                        <span class="text-sm text-slate-600 select-none">Dolor opresivo en el pecho (Riesgo cardíaco)</span>
+                        <input type="checkbox" id="dolorPecho" class="w-4 h-4 text-blue-600 border-slate-300 rounded">
+                        <span class="text-sm text-slate-600 select-none">Dolor opresivo en el pecho</span>
                     </label>
                     
                     <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" id="dificultadRespirar" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                        <input type="checkbox" id="dificultadRespirar" class="w-4 h-4 text-blue-600 border-slate-300 rounded">
                         <span class="text-sm text-slate-600 select-none">Dificultad grave para respirar</span>
                     </label>
                     
                     <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" id="dolorIntenso" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                        <input type="checkbox" id="dolorIntenso" class="w-4 h-4 text-blue-600 border-slate-300 rounded">
                         <span class="text-sm text-slate-600 select-none">Dolor de cabeza agudo e incapacitante</span>
                     </label>
                 </div>
@@ -68,15 +66,16 @@
             </form>
         </section>
 
-        <!-- MONITOR DE SALA DE ESPERA LOCAL (Ocupa 7 columnas de 12) -->
         <section class="lg:col-span-7 bg-slate-900 text-slate-100 p-6 rounded-2xl shadow-xl border border-slate-800 flex flex-col justify-between min-h-[450px]">
             <div>
                 <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-3">
                     <div class="flex items-center gap-2">
                         <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
-                        <h2 class="text-xl font-bold tracking-wide text-cyan-400">MONITOR LOCAL DE TRIAJE</h2>
+                        <h2 class="text-xl font-bold tracking-wide text-cyan-400">SALA DE ESPERA VIRTUAL (NUBE)</h2>
                     </div>
-                    <span class="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded font-mono">V_2.0</span>
+                    <button onclick="cargarPacientesDesdeNube()" class="text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 px-3 py-1.5 rounded-lg transition font-medium">
+                        🔄 Sincronizar
+                    </button>
                 </div>
                 
                 <div class="overflow-x-auto">
@@ -90,7 +89,7 @@
                         </thead>
                         <tbody id="tabla-espera" class="divide-y divide-slate-800/60">
                             <tr>
-                                <td colspan="3" class="text-center py-12 text-slate-500">No hay pacientes registrados en esta sesión.</td>
+                                <td colspan="3" class="text-center py-12 text-slate-500">Cargando sala de espera desde la nube...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -99,46 +98,86 @@
             
             <div class="mt-6 p-3 bg-slate-800/40 rounded-xl border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
                 <span>Algoritmo: Protocolo Manchester Modernizado</span>
-                <span class="text-emerald-400 font-semibold">● Conectado a la nube</span>
+                <span class="text-emerald-400 font-semibold">● Sincronizado</span>
             </div>
         </section>
 
     </main>
 
     <script>
-        // URL de tu API de Google Apps Script integrada correctamente
+        // URL de tu API de Google Apps Script
         const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbx2EbsLZX_wxpxzmsLbB6XEuhA-lAa_udFVUZPLzE43XtGqIKCCqPVapVo9OKZCzJlH/exec";
 
-        // Configuración de niveles usando prefijos numéricos para la ordenación en Google Sheets
         const NIVELES = {
-            ROJO:     { nombre: "1 - ROJO", badge: "bg-red-500 text-white", prioridad: 1 },
-            AMARILLO: { nombre: "2 - AMARILLO", badge: "bg-amber-500 text-slate-900", prioridad: 2 },
-            VERDE:    { nombre: "3 - VERDE", badge: "bg-emerald-500 text-white", prioridad: 3 }
+            "1 - ROJO":     { badge: "bg-red-500 text-white", prioridad: 1 },
+            "2 - AMARILLO": { badge: "bg-amber-500 text-slate-900", prioridad: 2 },
+            "3 - VERDE":    { badge: "bg-emerald-500 text-white", prioridad: 3 }
         };
 
-        let pacientesLocales = [];
+        // 📥 FUNCIÓN PARA CONSULTAR Y DESCARGAR LOS DATOS REALES DESDE GOOGLE SHEETS
+        async function cargarPacientesDesdeNube() {
+            const tbody = document.getElementById('tabla-espera');
+            try {
+                const respuesta = await fetch(URL_GOOGLE_SCRIPT);
+                const pacientes = await respuesta.json();
+                
+                tbody.innerHTML = '';
+
+                if (!pacientes || pacientes.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="3" class="text-center py-12 text-slate-500">No hay pacientes en espera en este momento. 🙌</td></tr>`;
+                    return;
+                }
+
+                // Ordenar dinámicamente por nivel de riesgo prioritario (1 pasa antes que 2, etc.)
+                pacientes.sort((a, b) => {
+                    const prioA = NIVELES[a.gravedad]?.prioridad || 4;
+                    const prioB = NIVELES[b.gravedad]?.prioridad || 4;
+                    return prioA - prioB;
+                });
+
+                pacientes.forEach((paciente, idx) => {
+                    const fila = document.createElement('tr');
+                    fila.className = "hover:bg-slate-800/40 transition-colors";
+
+                    const esPrimero = idx === 0;
+                    const textoEstado = esPrimero ? "📢 PASAR A BOX MÉDICO" : "En espera";
+                    const claseEstado = esPrimero ? "text-cyan-400 font-bold animate-pulse" : "text-slate-500 text-sm";
+                    const badgeClase = NIVELES[paciente.gravedad]?.badge || "bg-slate-500 text-white";
+
+                    fila.innerHTML = `
+                        <td class="py-3.5 font-medium text-slate-200">
+                            ${paciente.nombre}
+                            <span class="block text-xs text-slate-500 font-mono">Reg: ${paciente.hora}</span>
+                        </td>
+                        <td class="py-3.5 text-center">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold font-mono tracking-wide shadow-sm ${badgeClase}">
+                                ${paciente.gravedad}
+                            </span>
+                        </td>
+                        <td class="py-3.5 text-right ${claseEstado}">${textoEstado}</td>
+                    `;
+                    tbody.appendChild(fila);
+                });
+
+            } catch (err) {
+                console.error("Error al leer de la nube:", err);
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-12 text-red-400">Error al sincronizar con la central.</td></tr>`;
+            }
+        }
 
         // Árbol de Decisión Lógica basado en Programación L
         function evaluarTriaje(sintomas) {
-            // Regla de Oro 1: Síntomas que amenazan la vida directamente -> Rojo
-            if (sintomas.dolorPecho || sintomas.dificultadRespirar) {
-                return NIVELES.ROJO;
-            }
-            // Regla de Oro 2: Signos vitales alterados o dolor agudo -> Amarillo
-            if (sintomas.temperatura >= 39 || sintomas.presion > 140 || sintomas.dolorIntenso) {
-                return NIVELES.AMARILLO;
-            }
-            // Regla por defecto -> Verde
-            return NIVELES.VERDE;
+            if (sintomas.dolorPecho || sintomas.dificultadRespirar) return "1 - ROJO";
+            if (sintomas.temperatura >= 39 || sintomas.presion > 140 || sintomas.dolorIntenso) return "2 - AMARILLO";
+            return "3 - VERDE";
         }
 
-        // Captura del envío del formulario
+        // Manejar el envío de nuevos registros
         document.getElementById('form-triaje').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
             const btn = document.getElementById('btn-enviar');
             btn.disabled = true;
-            btn.innerText = "Procesando y Sincronizando...";
+            btn.innerText = "Sincronizando con Nube...";
 
             const nombre = document.getElementById('nombre').value;
             const temperatura = parseFloat(document.getElementById('temperatura').value);
@@ -147,18 +186,10 @@
             const dificultadRespirar = document.getElementById('dificultadRespirar').checked;
             const dolorIntenso = document.getElementById('dolorIntenso').checked;
 
-            const sintomas = { temperatura, presion, dolorPecho, dificultadRespirar, dolorIntenso };
-            const clasificacion = evaluarTriaje(sintomas);
+            const gravedadCalculada = evaluarTriaje({ temperatura, presion, dolorPecho, dificultadRespirar, dolorIntenso });
 
-            // Preparar el paquete JSON para enviar a Google Sheets
-            const payload = {
-                nombre: nombre,
-                temperatura: temperatura,
-                presion: presion,
-                gravedad: clasificacion.nombre
-            };
+            const payload = { nombre, temperatura, presion, gravedad: gravedadCalculada };
 
-            // 1. Envío asíncrono en segundo plano a la API de Google sin interferir con la UX
             try {
                 await fetch(URL_GOOGLE_SCRIPT, {
                     method: 'POST',
@@ -167,66 +198,25 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                console.log("Sincronización en la nube completada.");
+                
+                // Pequeña pausa de 600ms para asegurar que Google asiente la fila antes de refrescar
+                setTimeout(async () => {
+                    await cargarPacientesDesdeNube();
+                    btn.disabled = false;
+                    btn.innerText = "Clasificar y Enviar a Central";
+                }, 600);
+
             } catch (err) {
-                console.error("Error de red al sincronizar con Google Sheets:", err);
+                console.error("Error al enviar:", err);
+                btn.disabled = false;
+                btn.innerText = "Clasificar y Enviar a Central";
             }
 
-            // 2. Insertar y ordenar localmente el flujo en pantalla
-            const nuevoPaciente = {
-                id: Date.now(),
-                nombre: nombre,
-                gravedad: clasificacion.nombre,
-                badge: clasificacion.badge,
-                prioridad: clasificacion.prioridad,
-                hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            };
-
-            pacientesLocales.push(nuevoPaciente);
-            // Ordenar por nivel de riesgo prioritario (1 pasa antes que 2, y 2 antes que 3)
-            pacientesLocales.sort((a, b) => a.prioridad - b.prioridad);
-
-            // Actualizar la interfaz visual del monitor
-            renderizarTabla();
-
-            // Limpieza del formulario
             document.getElementById('form-triaje').reset();
-            btn.disabled = false;
-            btn.innerText = "Clasificar y Enviar a Central";
         });
 
-        function renderizarTabla() {
-            const tbody = document.getElementById('tabla-espera');
-            tbody.innerHTML = '';
-
-            if (pacientesLocales.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-12 text-slate-500">No hay pacientes.</td></tr>`;
-                return;
-            }
-
-            pacientesLocales.forEach((paciente, idx) => {
-                const fila = document.createElement('tr');
-                fila.className = "hover:bg-slate-800/40 transition-colors";
-
-                const esPrimero = idx === 0;
-                const textoEstado = esPrimero ? "📢 PASAR A BOX MÉDICO" : "En espera";
-                const claseEstado = esPrimero ? "text-cyan-400 font-bold animate-pulse" : "text-slate-500 text-sm";
-
-                fila.innerHTML = `
-                    <td class="py-3.5 font-medium text-slate-200">
-                        ${paciente.nombre}
-                        <span class="block text-xs text-slate-500 font-mono">Reg: ${paciente.hora}</span>
-                    </td>
-                    <td class="py-3.5 text-center">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold font-mono tracking-wide shadow-sm ${paciente.badge}">
-                            ${paciente.gravedad}
-                        </span>
-                    </td>
-                    <td class="py-3.5 text-right ${claseEstado}">${textoEstado}</td>
-                `;
-                tbody.appendChild(fila);
-            });
-        }
+        // 🔄 Descargar la base de datos real automáticamente al abrir o recargar la pestaña
+        window.addEventListener('DOMContentLoaded', cargarPacientesDesdeNube);
     </script>
 </body>
 </html>
